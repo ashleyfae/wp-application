@@ -12,6 +12,11 @@ namespace AshleyFae\App;
 use AshleyFae\App\Container\Container;
 use AshleyFae\App\ServiceProviders\ServiceProvider;
 
+/**
+ * @method void singleton(string $abstract, \Closure|string|null $concrete = null)
+ * @method void bind(string $abstract, \Closure|string|null $concrete = null)
+ * @method object make(string $abstract, array $parameters = [])
+ */
 class App
 {
 
@@ -42,6 +47,36 @@ class App
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Properties are loaded from the service container.
+     *
+     * @since 1.0
+     *
+     * @param  string  $property
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function __get(string $property)
+    {
+        return $this->container->get($property);
+    }
+
+    /**
+     * Magic methods are passed to the service container.
+     *
+     * @since 1.0
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments)
+    {
+        return call_user_func_array([$this->container, $name], $arguments);
     }
 
     public function boot(): void
