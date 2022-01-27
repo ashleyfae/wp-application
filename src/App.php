@@ -4,13 +4,14 @@
  *
  * @package   wp-application
  * @copyright Copyright (c) 2021, Ashley Gibson
- * @license   GPL2+
+ * @license   MIT
  */
 
-namespace AshleyFae\App;
+namespace Ashleyfae\AppWP;
 
-use AshleyFae\App\Container\Container;
-use AshleyFae\App\ServiceProviders\ServiceProvider;
+use Ashleyfae\AppWP\Container\Container;
+use Ashleyfae\AppWP\Exceptions\InvalidServiceProviderException;
+use Ashleyfae\AppWP\ServiceProviders\ServiceProvider;
 
 /**
  * @method void singleton(string $abstract, \Closure|string|null $concrete = null)
@@ -79,28 +80,64 @@ class App
         return call_user_func_array([$this->container, $name], $arguments);
     }
 
+    /**
+     * Loads the service providers.
+     *
+     * @since 1.0
+     *
+     * @return void
+     */
     public function boot(): void
     {
-        add_action('plugins_loaded', [$this, 'loadServiceProviders'], 200);
+        $this->loadServiceProviders();
     }
 
-    public function addServiceProviders(array $classes): void
+    /**
+     * Sets an array of service providers to load.
+     *
+     * @since 1.0
+     *
+     * @param  array  $classes
+     *
+     * @return void
+     */
+    public function withServiceProviders(array $classes): void
     {
         foreach ($classes as $class) {
             $this->addServiceProvider($class);
         }
     }
 
+    /**
+     * Adds a single service provider.
+     *
+     * @since 1.0
+     *
+     * @param  string  $class
+     *
+     * @return void
+     * @throws InvalidServiceProviderException
+     */
     public function addServiceProvider(string $class): void
     {
         $this->validateServiceProvider($class);
         $this->serviceProviders[] = $class;
     }
 
+    /**
+     * Validates the class as a service provider.
+     *
+     * @since 1.0
+     *
+     * @param  string  $class
+     *
+     * @return void
+     * @throws InvalidServiceProviderException
+     */
     private function validateServiceProvider(string $class): void
     {
         if (! is_subclass_of($class, ServiceProvider::class)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidServiceProviderException(sprintf(
                 '%s class must implement the %s interface.',
                 $class,
                 ServiceProvider::class
@@ -108,6 +145,14 @@ class App
         }
     }
 
+    /**
+     * Registers and boots the service providers.
+     *
+     * @since 1.0
+     *
+     * @return void
+     * @throws InvalidServiceProviderException
+     */
     public function loadServiceProviders(): void
     {
         if ($this->serviceProvidersLoaded) {

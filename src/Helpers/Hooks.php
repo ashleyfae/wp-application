@@ -4,12 +4,13 @@
  *
  * @package   wp-application
  * @copyright Copyright (c) 2021, Ashley Gibson
- * @license   GPL2+
+ * @license   MIT
+ * @since     1.0
  */
 
-namespace AshleyFae\App\Helpers;
+namespace Ashleyfae\AppWP\Helpers;
 
-use AshleyFae\App\App;
+use Ashleyfae\AppWP\App;
 
 class Hooks
 {
@@ -17,6 +18,8 @@ class Hooks
     /**
      * Adds a hook using `add_action()`.
      * This prevents the need to instantiate a class before adding it to hook.
+     *
+     * @since 1.0
      *
      * @param  string  $tag
      * @param  string  $class
@@ -49,6 +52,18 @@ class Hooks
         );
     }
 
+    /**
+     * Adds a hook using `add_filter()`.
+     * This prevents the need to instantiate a class before adding it to hook.
+     *
+     * @since 1.0
+     *
+     * @param  string  $tag
+     * @param  string  $class
+     * @param  string  $method
+     * @param  int  $priority
+     * @param  int  $acceptedArgs
+     */
     public static function addFilter(
         string $tag,
         string $class,
@@ -67,7 +82,7 @@ class Hooks
         add_filter(
             $tag,
             static function () use ($tag, $class, $method) {
-                call_user_func_array([App::getInstance()->make($class), $method], func_get_args());
+                return call_user_func_array([App::getInstance()->make($class), $method], func_get_args());
             },
             $priority,
             $acceptedArgs

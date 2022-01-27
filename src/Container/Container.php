@@ -5,17 +5,17 @@
  * Taken from Laravel.
  *
  * @package   wp-application
- * @copyright Copyright (c) 2021, Ashley Gibson
- * @license   GPL2+
+ * @copyright Copyright (c) 2022, Ashley Gibson
+ * @license   MIT
  * @since     1.0
  */
 
-namespace AshleyFae\App\Container;
+namespace Ashleyfae\AppWP\Container;
 
 use ArrayAccess;
 use Closure;
 use Exception;
-use AshleyFae\App\Exceptions\BindingResolutionException;
+use Ashleyfae\AppWP\Exceptions\BindingResolutionException;
 use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;

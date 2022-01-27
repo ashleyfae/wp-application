@@ -3,11 +3,12 @@
  * ServiceProvider.php
  *
  * @package   wp-application
- * @copyright Copyright (c) 2021, Ashley Gibson
- * @license   GPL2+
+ * @copyright Copyright (c) 2022, Ashley Gibson
+ * @license   MIT
+ * @since     1.0
  */
 
-namespace AshleyFae\App\ServiceProviders;
+namespace Ashleyfae\AppWP\ServiceProviders;
 
 interface ServiceProvider
 {

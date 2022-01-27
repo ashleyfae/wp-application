@@ -4,10 +4,10 @@
  *
  * @package   wp-application
  * @copyright Copyright (c) 2021, Ashley Gibson
- * @license   GPL2+
+ * @license   MIT
  */
 
-namespace AshleyFae\App\Exceptions;
+namespace Ashleyfae\AppWP\Exceptions;
 
 class BindingResolutionException extends \Exception {
 
